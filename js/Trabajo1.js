@@ -79,7 +79,7 @@ function loadScene() {
         gltf.scene.position.y = 1;
         gltf.scene.rotation.y = -Math.PI / 2;
         gltf.scene.name = 'city';
-        scene.add(gltf.scene);
+        suelo.add(gltf.scene);
         gltf.scene.traverse(ob=>{
             if(ob.isObject3D) ob.castShadow = true;
         })
