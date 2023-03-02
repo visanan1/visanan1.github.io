@@ -37,7 +37,7 @@ function init() {
 
     // Instanciar el nodo raiz de la escena
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0, 0, 0);
+    scene.background = new THREE.Color(1, 1, 1);
 
     // Instanciar la camara
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100);
