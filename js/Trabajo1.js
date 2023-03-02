@@ -75,11 +75,14 @@ function loadScene() {
     // Importar un modelo en gltf
     const glloader = new GLTFLoader();
 
-    /*glloader.load('models/city/scene.gltf', function (gltf) {
+    glloader.load('models/city/scene.gltf', function (gltf) {
         gltf.scene.position.y = 1;
         gltf.scene.rotation.y = -Math.PI / 2;
         gltf.scene.name = 'city';
         scene.add(gltf.scene);
+        gltf.scene.traverse(ob=>{
+            if(ob.isObject3D) ob.castShadow = true;
+        })
 
     }, undefined, function (error) {
 
@@ -89,7 +92,7 @@ function loadScene() {
 
     
 
-    glloader.load('models/nave/nave.glb', function (gltf) {
+    /*glloader.load('models/nave/nave.glb', function (gltf) {
         gltf.scene.position.y = 1;
         gltf.scene.rotation.y = -Math.PI / 2;
         gltf.scene.name = 'nave';
@@ -102,10 +105,11 @@ function loadScene() {
     });*/
 
     glloader.load('models/coin/scene.gltf', function (gltf) {
+        const city = scene.getObjectByName('city');
         gltf.scene.position.y = 1;
         gltf.scene.rotation.y = -Math.PI / 2;
         gltf.scene.name = 'coin';
-        scene.add(gltf.scene);
+        city.add(gltf.scene);
         gltf.scene.traverse(ob=>{
             if(ob.isObject3D) ob.castShadow = true;
         })
