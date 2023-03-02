@@ -1,12 +1,3 @@
-/**
- * EscenaAnimada.js
- * 
- * Seminario AGM. Escena basica en three.js con interacción y animacion: 
- * Animacion coherente, GUI, picking, orbitacion
- * 
- * @author <rvivo@upv.es>, 2022
- * 
- */
 
 // Modulos necesarios
 import * as THREE from "../lib/three.module.js";
@@ -20,8 +11,6 @@ let renderer, scene, camera;
 
 // Otras globales
 let cameraControls, effectController;
-let esferaCubo, cubo, esfera;
-let angulo = 0;
 
 // Acciones
 init();
@@ -32,22 +21,45 @@ render();
 function init() {
     // Instanciar el motor de render
     renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('container').appendChild(renderer.domElement);
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    document.getElementById('container').appendChild( renderer.domElement );
+    renderer.antialias = true;
+    renderer.shadowMap.enabled = true;
 
     // Instanciar el nodo raiz de la escena
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(1, 1, 1);
+    scene.background = new THREE.Color(0.5,0.5,0.5);
 
     // Instanciar la camara
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100);
-    camera.position.set(0.5, 2, 7);
-    cameraControls = new OrbitControls(camera, renderer.domElement);
-    cameraControls.target.set(0, 1, 0);
-    camera.lookAt(0, 1, 0);
+    camera= new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,1,100);
+    camera.position.set(0.5,2,7);
+    cameraControls = new OrbitControls( camera, renderer.domElement );
+    cameraControls.target.set(0,1,0);
+    camera.lookAt(0,1,0);
+
+    // Luces
+    const ambiental = new THREE.AmbientLight(0x222222);
+    scene.add(ambiental);
+    const direccional = new THREE.DirectionalLight(0xFFFFFF,0.3);
+    direccional.position.set(-1,1,-1);
+    direccional.castShadow = true;
+    scene.add(direccional);
+    const puntual = new THREE.PointLight(0xFFFFFF,0.5);
+    puntual.position.set(2,7,-4);
+    scene.add(puntual);
+    const focal = new THREE.SpotLight(0xFFFFFF,0.3);
+    focal.position.set(-2,7,4);
+    focal.target.position.set(0,0,0);
+    focal.angle= Math.PI/7;
+    focal.penumbra = 0.3;
+    focal.castShadow= true;
+    focal.shadow.camera.far = 20;
+    focal.shadow.camera.fov = 80;
+    scene.add(focal);
+    scene.add(new THREE.CameraHelper(focal.shadow.camera));
 
     // Eventos
-    //renderer.domElement.addEventListener('dblclick', animate );
+    
 }
 
 function loadScene() {
@@ -94,6 +106,9 @@ function loadScene() {
         gltf.scene.rotation.y = -Math.PI / 2;
         gltf.scene.name = 'coin';
         scene.add(gltf.scene);
+        gltf.scene.traverse(ob=>{
+            if(ob.isObject3D) ob.castShadow = true;
+        })
 
     }, undefined, function (error) {
 
