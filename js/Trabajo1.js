@@ -77,7 +77,7 @@ function loadScene() {
 
     glloader.load('models/city/scene.gltf', function (gltf) {
         gltf.scene.position.y = 1;
-        gltf.scene.rotation.y = -Math.PI / 2;
+        //gltf.scene.rotation.y = -Math.PI / 2;
         gltf.scene.name = 'city';
         suelo.add(gltf.scene);
         gltf.scene.traverse(ob=>{
